@@ -18,7 +18,8 @@ WORKDIR /app
 #     bloating the image with pip's download cache.
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir -r requirements.txt
 
 # TODO: copy the rest of the service source code into the image.
 COPY . .
