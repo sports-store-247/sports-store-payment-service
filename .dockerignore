@@ -1,0 +1,31 @@
+# Version control
+.git
+.gitignore
+
+# Docs
+*.md
+
+# Python bytecode & caches (mirrors .gitignore)
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+
+# Secrets - never bake these into the image; pass env vars via docker-compose instead
+.env
+.env.*
+
+# Tests - not needed in the runtime image
+tests/
+pytest.ini
+
+# Editor/OS cruft
+.vscode/
+.idea/
+.DS_Store
