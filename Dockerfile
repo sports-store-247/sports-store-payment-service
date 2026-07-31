@@ -2,7 +2,7 @@
 #   - Use a Python 3.11 image, "slim" variant recommended (smaller, fewer
 #     packages than the default image).
 
-FROM python:3.11-slim
+FROM python:3.11-slim AS builder
 
 # TODO: set the working directory for the rest of the instructions below
 #   (e.g. /app).
@@ -18,8 +18,12 @@ WORKDIR /app
 #     bloating the image with pip's download cache.
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
-    pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --user -r requirements.txt
+
+FROM python:3.11-slim
+WORKDIR /app
+COPY --from=builder /root/.local /root/.local
+ENV PATH=/root/.local/bin:$PATH
 
 # TODO: copy the rest of the service source code into the image.
 COPY . .
