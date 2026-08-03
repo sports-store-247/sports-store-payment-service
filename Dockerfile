@@ -24,9 +24,16 @@ COPY requirements.txt .
 # world-readable (0755) by default.
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
+RUN pip install --no-cache-dir --upgrade setuptools wheel pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 FROM python:3.11-slim
+
+# Patch the base image's bundled setuptools/wheel (they vendor their
+# own old copies of jaraco.context and wheel), then strip pip back out
+# so it (and its own vendored packages) never ships in the final image.
+RUN pip install --no-cache-dir --upgrade setuptools wheel && \
+    rm -rf /usr/local/lib/python3.11/site-packages/pip* /usr/local/bin/pip*
 
 COPY --from=builder /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
