@@ -9,4 +9,4 @@ pytest-asyncio==0.21.1
 httpx==0.25.2
 msgpack>=1.2.1
 
-prometheus-fastapi-instrumentator==7.0.0
+prometheus-fastapi-instrumentator==8.1.0
